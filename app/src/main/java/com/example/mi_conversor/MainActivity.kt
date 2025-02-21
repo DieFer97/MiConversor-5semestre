@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigateToTemperature() {
         // Por ahora, solo mostraremos un mensaje. Más adelante, navegaremos a la actividad correspondiente.
-        Toast.makeText(this, "Navegando a Conversor de Temperatura", Toast.LENGTH_SHORT).show()
+        Intent(this, TemperatureActivity::class.java).also { startActivity(it) }
         // Intent(this, TemperatureActivity::class.java).also { startActivity(it) }
     }
 
