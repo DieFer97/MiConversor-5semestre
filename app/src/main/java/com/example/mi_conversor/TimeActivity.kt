@@ -4,17 +4,20 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mi_conversor.databinding.ActivityTimeBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TimeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTimeBinding
 
-    private val timeUnits = mapOf(
-        "Segundos" to 1.0,
-        "Minutos" to 1.0 / 60,
-        "Horas" to 1.0 / 3600,
-        "Días" to 1.0 / 86400,
-        "Semanas" to 1.0 / 604800
+    // Diferencia horaria respecto a UTC
+    private val timeZones = mapOf(
+        "Perú" to -5,
+        "México" to -6,
+        "Argentina" to -3,
+        "España" to 1,
+        "Japón" to 9
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,11 +25,11 @@ class TimeActivity : AppCompatActivity() {
         binding = ActivityTimeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val units = timeUnits.keys.toTypedArray()
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, units)
+        val countries = timeZones.keys.toTypedArray()
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, countries)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.fromTimeSpinner.adapter = adapter
-        binding.toTimeSpinner.adapter = adapter
+        binding.fromCountrySpinner.adapter = adapter
+        binding.toCountrySpinner.adapter = adapter
 
         binding.convertButton.setOnClickListener {
             convertTime()
@@ -38,20 +41,34 @@ class TimeActivity : AppCompatActivity() {
     }
 
     private fun convertTime() {
-        val amount = binding.inputTime.text.toString().toDoubleOrNull()
-        if (amount == null || amount <= 0) {
-            Toast.makeText(this, "Ingrese un valor válido", Toast.LENGTH_SHORT).show()
+        val inputTimeStr = binding.inputTime.text.toString()
+        if (inputTimeStr.isEmpty() || !inputTimeStr.contains(":")) {
+            Toast.makeText(this, "Ingrese una hora válida en formato HH:mm", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val fromUnit = binding.fromTimeSpinner.selectedItem.toString()
-        val toUnit = binding.toTimeSpinner.selectedItem.toString()
+        val fromCountry = binding.fromCountrySpinner.selectedItem.toString()
+        val toCountry = binding.toCountrySpinner.selectedItem.toString()
 
-        val fromRate = timeUnits[fromUnit] ?: return
-        val toRate = timeUnits[toUnit] ?: return
+        val fromOffset = timeZones[fromCountry] ?: return
+        val toOffset = timeZones[toCountry] ?: return
 
-        val convertedAmount = (amount / fromRate) * toRate
+        // Convertir la hora ingresada a minutos totales
+        val parts = inputTimeStr.split(":")
+        val hour = parts[0].toIntOrNull()
+        val minute = parts[1].toIntOrNull()
 
-        binding.resultTextView.text = "%.2f %s = %.2f %s".format(amount, fromUnit, convertedAmount, toUnit)
+        if (hour == null || minute == null || hour !in 0..23 || minute !in 0..59) {
+            Toast.makeText(this, "Ingrese una hora válida en formato HH:mm", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Calcular la nueva hora
+        val totalMinutes = (hour * 60 + minute) + ((toOffset - fromOffset) * 60)
+        val newHour = (totalMinutes / 60) % 24
+        val newMinute = totalMinutes % 60
+
+        val resultTime = String.format("%02d:%02d", newHour, newMinute)
+        binding.resultTextView.text = "Hora en $toCountry: $resultTime"
     }
 }
