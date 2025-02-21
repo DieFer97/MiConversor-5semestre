@@ -12,8 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mi_Conversor"
         tools:targetApi="31">
+        <activity android:name="com.example.mi_conversor.TemperatureActivity" />
+        <activity android:name="com.example.mi_conversor.CurrencyActivity" />
+
         <activity
             android:name=".MainActivity"
+
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

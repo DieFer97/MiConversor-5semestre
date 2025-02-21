@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.mi_conversor"
-    compileSdk = 34
+    compileSdk = 35
 
     buildFeatures {
         viewBinding = true

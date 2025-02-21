@@ -33,7 +33,13 @@ class TemperatureActivity : AppCompatActivity() {
     }
 
     private fun convertTemperature() {
-        val input = binding.inputTemperature.text.toString().toDoubleOrNull()
+        val inputText = binding.inputTemperature.text.toString()
+        if (inputText.isEmpty()) {
+            Toast.makeText(this, "Ingrese un valor válido", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val input = inputText.toDoubleOrNull()
         if (input == null) {
             Toast.makeText(this, "Por favor, ingrese una temperatura válida", Toast.LENGTH_SHORT).show()
             return
