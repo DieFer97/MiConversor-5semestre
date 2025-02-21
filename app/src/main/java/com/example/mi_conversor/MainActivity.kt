@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToLength() {
-        Toast.makeText(this, "Navegando a Conversor de Longitudes", Toast.LENGTH_SHORT).show()
+        Intent(this, LengthActivity::class.java).also { startActivity(it) }
         // Intent(this, LengthActivity::class.java).also { startActivity(it) }
     }
 
