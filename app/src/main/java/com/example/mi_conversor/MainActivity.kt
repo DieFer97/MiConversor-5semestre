@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToCurrency() {
-        Toast.makeText(this, "Navegando a Conversor de Monedas", Toast.LENGTH_SHORT).show()
+        Intent(this, CurrencyActivity::class.java).also { startActivity(it) }
         // Intent(this, CurrencyActivity::class.java).also { startActivity(it) }
     }
 
