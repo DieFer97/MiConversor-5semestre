@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToTime() {
-        Toast.makeText(this, "Navegando a Conversor de Horas", Toast.LENGTH_SHORT).show()
+        Intent(this, TimeActivity::class.java).also { startActivity(it) }
         // Intent(this, TimeActivity::class.java).also { startActivity(it) }
     }
 }

@@ -15,6 +15,7 @@
         <activity android:name="com.example.mi_conversor.TemperatureActivity" />
         <activity android:name="com.example.mi_conversor.CurrencyActivity" />
         <activity android:name="com.example.mi_conversor.LengthActivity" />
+        <activity android:name="com.example.mi_conversor.TimeActivity" />
 
         <activity
             android:name=".MainActivity"
